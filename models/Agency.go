@@ -2,16 +2,9 @@ package models
 
 import "fmt"
 
-// IAgency - Interface that every agencies need to implement
-type IAgency interface {
-	ContainsPosition(p *Position) bool
-	TransportsNearPosition(p *Position, radius float64) ([]ITransport, error)
-}
-
-// AgencyProto - Can be embedded by custom Agencies structs
+// Agency - Can be embedded by custom Agencies structs
 // The gives some properties and to methods
-// Each Agencies structs still need to implement TransportsNearPosition
-type AgencyProto struct {
+type Agency struct {
 	ID          string   `json:"ID"`          // ID of the region (Country.City.Agency)
 	Name        string   `json:"name"`        // Displayed name of the Agency
 	URL         string   `json:"url"`         // The URL to the agency's website/app...
@@ -25,13 +18,33 @@ type AgencyProto struct {
 
 // String - Stringify an agency
 // @return the agency's ID
-func (a AgencyProto) String() string {
+func (a Agency) String() string {
 	return fmt.Sprintf("%v: %v o--------> %v m", a.Name, a.Center, a.Radius)
 }
 
 // ContainsPosition - Tell if a position is in the bounds of the agency
 // @return the boolean, true if the position is in the agency's bounds
 // TODO - Handle the case where the Agency is on the latitude or longitude 0
-func (a *AgencyProto) ContainsPosition(p *Position) bool {
-	return a.Center.DistanceFrom(p) <= a.Radius
+func (a Agency) ContainsPosition(position Position) bool {
+	return a.Center.DistanceFrom(position) <= a.Radius
+}
+
+// TransportsNearPosition - Find transports contained in a circle
+// @param p: the center of the circle
+// @param radius: the radius of the circle in meters
+// @return the transports list
+func (a Agency) TransportsNearPosition(transports []Transport, position Position, radius int) []Transport {
+	// Init array of filtered transports
+	filteredTransports := make([]Transport, 0, 200)
+	// Loop trough agencies transports to find the one that are in the radius limits
+	i := 0
+	for j, t := range transports {
+		if t.DistanceFrom(position) < float64(radius) {
+			filteredTransports = append(filteredTransports, transports[j])
+			i++
+		}
+	}
+	// Return the transport slice from 0 to i
+	// Indexes after i might be empty spots in the original array
+	return filteredTransports[:i]
 }

@@ -6,57 +6,57 @@ const (
 	Metro
 	Rail
 	Bus
+	Ferry
+	Cable
+	Gondola
+	Funicular
+	Bike
+	Car
 	Unknown
 )
 
 // Map transports types to string
 const (
-	TramString    = "Tram"
-	MetroString   = "Metro"
-	RailString    = "RER"
-	BusString     = "Bus"
-	UnknownString = "unknown"
+	TramString      = "Tram"
+	MetroString     = "Metro"
+	RailString      = "Train"
+	BusString       = "Bus"
+	FerryString     = "Ferry"
+	CableString     = "Cable"
+	GondolaString   = "Gondola"
+	FunicularString = "Funicular"
+	BikeString      = "Bike"
+	CarString       = "Car"
+	UnknownString   = "Unknown"
 )
 
 type (
-	// ITransport - Interface that every transports need to implement
-	ITransport interface {
-		UpdateInfo() error
-		DistanceFrom(p2 *Position) float64
-	}
-
-	// Group -
-	// TODO - How is it used/usefull ?
-	Group struct {
-		ID    string
-		Name  string
-		Image string
-	}
-
 	// Passage - struct for public transports times
 	Passage struct {
 		Direction string   `json:"direction"` // Direction of the passage
 		Times     []string `json:"times"`     // Time, is array of string to support non numeric values
 	}
 
-	// TransportProto - Can be embedded by custom Transports structs
+	// Transport - Can be embedded by custom Transports structs
 	// Gives some usefull properties and two methods
 	// Each Transports struct still need to implement UpdateInfo
-	TransportProto struct {
-		ID       string     `json:"ID"`       // ID of the Transport, should be specific to the Agency
-		AgencyID string     `json:"agencyID"` // ID of the associated agency
-		Type     int        `json:"type"`     // String identifing the kind of transport
-		Name     string     `json:"name"`     // The name of the transport, doesn't have to be unique
-		Line     string     `json:"line"`     // The line of the transport
-		Position Position   `json:"position"` // Position of the transport
-		Passages []*Passage `json:"passages"` // Next passage for public transports
-		IconURL  string     `json:"iconURL"`  // URL to the icon
+	Transport struct {
+		ID        string    `json:"ID"`        // ID of the Transport, should be specific to the Agency
+		AgencyID  string    `json:"agencyID"`  // ID of the associated agency
+		Type      int       `json:"type"`      // String identifing the kind of transport
+		Name      string    `json:"name"`      // The name of the transport, doesn't have to be unique
+		Line      string    `json:"line"`      // The line of the transport
+		Position  Position  `json:"position"`  // Position of the transport
+		Passages  []Passage `json:"passages"`  // Next passage for public transports
+		IconURL   string    `json:"iconURL"`   // URL to the icon
+		Available int       `json:"available"` // Number of available transports for Bikes or Cars
+		Empty     int       `json:"empty"`     // Number of empty spots for Bikes or Cars
 	}
 )
 
 // DistanceFrom - Compute the distance between the transport point and a position
 // @param p: the position
 // @return the distance
-func (t *TransportProto) DistanceFrom(p *Position) float64 {
-	return t.Position.DistanceFrom(p)
+func (t *Transport) DistanceFrom(position Position) float64 {
+	return t.Position.DistanceFrom(position)
 }
