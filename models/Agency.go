@@ -5,12 +5,12 @@ import "fmt"
 // Agency - Can be embedded by custom Agencies structs
 // The gives some properties and to methods
 type Agency struct {
-	ID     string          `json:"id"`     // ID of the region (Country.City.Agency)
-	Name   string          `json:"name"`   // Displayed name of the Agency
-	URL    string          `json:"url"`    // The URL to the agency's website/app...
-	Center Position        `json:"center"` // Center of the Agency
-	Radius float64         `json:"radius"` // Radius of the Agency in meters
-	Types  []TransportType `json:"types"`  // The type of transports handled by the agency
+	ID     string                `json:"id"`     // ID of the region (Country.City.Agency)
+	Name   string                `json:"name"`   // Displayed name of the Agency
+	URL    string                `json:"url"`    // The URL to the agency's website/app...
+	Center Position              `json:"center"` // Center of the Agency
+	Radius float64               `json:"radius"` // Radius of the Agency in meters
+	Types  map[int]TransportType `json:"types"`  // The type of transports handled by the agency
 }
 
 // String - Stringify an agency

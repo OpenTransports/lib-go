@@ -34,7 +34,6 @@ type (
 
 	// TransportType - Structure containing information for a transport type
 	TransportType struct {
-		ID   int    `json:"id"`
 		Name string `json:"name"`
 		Icon string `json:"icon,omitempty"`
 	}
