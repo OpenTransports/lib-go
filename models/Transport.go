@@ -51,14 +51,14 @@ type (
 	// Gives some usefull properties and two methods
 	// Each Transports struct still need to implement UpdateInfo
 	Transport struct {
-		ID           string        `json:"id"`       // ID of the Transport, should be specific to the Agency
-		AgencyID     string        `json:"agencyID"` // ID of the associated agency
-		Type         int           `json:"type"`     // String identifing the kind of transport
-		Name         string        `json:"name"`     // The name of the transport, doesn't have to be unique
-		Line         string        `json:"line"`     // The line of the transport
-		Position     Position      `json:"position"` // Position of the transport
-		Informations []Information `json:"passages"` // Informations on the transports
-		IconURL      string        `json:"iconURL"`  // URL to the icon
+		ID           string        `json:"id"`           // ID of the Transport, should be specific to the Agency
+		AgencyID     string        `json:"agencyID"`     // ID of the associated agency
+		Type         int           `json:"type"`         // String identifing the kind of transport
+		Name         string        `json:"name"`         // The name of the transport, doesn't have to be unique
+		Line         string        `json:"line"`         // The line of the transport
+		Position     Position      `json:"position"`     // Position of the transport
+		Informations []Information `json:"informations"` // Informations on the transports
+		IconURL      string        `json:"iconURL"`      // URL to the icon
 	}
 )
 
