@@ -31,26 +31,34 @@ const (
 )
 
 type (
-	// Passage - struct for public transports times
-	Passage struct {
-		Direction string   `json:"direction"` // Direction of the passage
-		Times     []string `json:"times"`     // Time, is array of string to support non numeric values
+
+	// TransportType - Structure containing information for a transport type
+	TransportType struct {
+		ID   int    `json:"id"`
+		Name string `json:"name"`
+		Icon string `json:"icon"`
+	}
+
+	// Information - structure for transports informations (passage, nb available)
+	Information struct {
+		Title     string   `json:"title"`     // Direction of the passage
+		Content   []string `json:"content"`   // Time, is array of string to support non numeric values
+		Warn      bool     `json:"warn"`      // Display the content differently to warn the user
+		Timestamp int      `json:"timestamp"` // The time at wich the content was updated
 	}
 
 	// Transport - Can be embedded by custom Transports structs
 	// Gives some usefull properties and two methods
 	// Each Transports struct still need to implement UpdateInfo
 	Transport struct {
-		ID        string    `json:"ID"`        // ID of the Transport, should be specific to the Agency
-		AgencyID  string    `json:"agencyID"`  // ID of the associated agency
-		Type      int       `json:"type"`      // String identifing the kind of transport
-		Name      string    `json:"name"`      // The name of the transport, doesn't have to be unique
-		Line      string    `json:"line"`      // The line of the transport
-		Position  Position  `json:"position"`  // Position of the transport
-		Passages  []Passage `json:"passages"`  // Next passage for public transports
-		IconURL   string    `json:"iconURL"`   // URL to the icon
-		Available int       `json:"available"` // Number of available transports for Bikes or Cars
-		Empty     int       `json:"empty"`     // Number of empty spots for Bikes or Cars
+		ID           string        `json:"id"`       // ID of the Transport, should be specific to the Agency
+		AgencyID     string        `json:"agencyID"` // ID of the associated agency
+		Type         int           `json:"type"`     // String identifing the kind of transport
+		Name         string        `json:"name"`     // The name of the transport, doesn't have to be unique
+		Line         string        `json:"line"`     // The line of the transport
+		Position     Position      `json:"position"` // Position of the transport
+		Informations []Information `json:"passages"` // Informations on the transports
+		IconURL      string        `json:"iconURL"`  // URL to the icon
 	}
 )
 
