@@ -32,9 +32,9 @@ const (
 
 type (
 
-	// TransportType - Structure containing information for a transport type
-	TransportType struct {
-		Name string `json:"name"`
+	// TypeInfo - Structure containing information for a transport type
+	TypeInfo struct {
+		Name string `json:"name,omitempty"`
 		Icon string `json:"icon,omitempty"`
 	}
 
