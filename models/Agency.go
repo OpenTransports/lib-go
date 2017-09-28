@@ -11,8 +11,8 @@ type Agency struct {
 	Center     Position         `json:"center"` // Center of the Agency
 	Radius     float64          `json:"radius"` // Radius of the Agency in meters
 	Types      map[int]TypeInfo `json:"types"`  // The type of transports handled by the agency
-	Transports []Transport
-	Routes     []Route
+	Transports []Transport      `json:"-"`      // List of all Transports for the agency
+	Routes     []Route          `json:"-"`      // List of all Routes for the agency
 }
 
 // String - Stringify an agency
