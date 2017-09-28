@@ -5,12 +5,14 @@ import "fmt"
 // Agency - Can be embedded by custom Agencies structs
 // The gives some properties and to methods
 type Agency struct {
-	ID     string           `json:"id"`     // ID of the region (Country.City.Agency)
-	Name   string           `json:"name"`   // Displayed name of the Agency
-	URL    string           `json:"url"`    // The URL to the agency's website/app...
-	Center Position         `json:"center"` // Center of the Agency
-	Radius float64          `json:"radius"` // Radius of the Agency in meters
-	Types  map[int]TypeInfo `json:"types"`  // The type of transports handled by the agency
+	ID         string           `json:"id"`     // ID of the region (Country.City.Agency)
+	Name       string           `json:"name"`   // Displayed name of the Agency
+	URL        string           `json:"url"`    // The URL to the agency's website/app...
+	Center     Position         `json:"center"` // Center of the Agency
+	Radius     float64          `json:"radius"` // Radius of the Agency in meters
+	Types      map[int]TypeInfo `json:"types"`  // The type of transports handled by the agency
+	Transports []Transport
+	Routes     []Route
 }
 
 // String - Stringify an agency
@@ -30,18 +32,40 @@ func (a Agency) ContainsPosition(position Position) bool {
 // @param p: the center of the circle
 // @param radius: the radius of the circle in meters
 // @return the transports list
-func (a Agency) TransportsNearPosition(transports []Transport, position Position, radius int) []Transport {
+func (a Agency) TransportsNearPosition(position Position, radius int) []Transport {
 	// Init array of filtered transports
 	filteredTransports := make([]Transport, 0, 200)
 	// Loop trough agencies transports to find the one that are in the radius limits
 	i := 0
-	for j, t := range transports {
+	for j, t := range a.Transports {
 		if t.DistanceFrom(position) < float64(radius) {
-			filteredTransports = append(filteredTransports, transports[j])
+			filteredTransports = append(filteredTransports, a.Transports[j])
 			i++
 		}
 	}
 	// Return the transport slice from 0 to i
 	// Indexes after i might be empty spots in the original array
 	return filteredTransports[:i]
+}
+
+// RouteForTransports -
+func (a Agency) RouteForTransports(transport Transport) *Route {
+	for _, route := range a.Routes {
+		if route.Line == transport.Line {
+			return &route
+		}
+	}
+
+	return nil
+}
+
+// TransportForID -
+func (a Agency) TransportForID(ID string) *Transport {
+	for _, transport := range a.Transports {
+		if transport.ID == ID {
+			return &transport
+		}
+	}
+
+	return nil
 }
